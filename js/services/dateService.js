@@ -22,7 +22,6 @@ fideligard.factory('dateService', function() {
 
     _dateInfo.date.setTime(millisDate)
 
-    console.log("_dateInfo.date is", _dateInfo.date)
     return _dateInfo
   };
 
