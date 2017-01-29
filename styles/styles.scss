@@ -11,11 +11,16 @@
   padding: 0;
 }
 
-#date-wrapper {
+#label-wrapper {
   position: relative;
   height: 20px;
   #date-label {
     position: absolute;
     left: 0;
   }
+}
+
+.no-horiz-padding {
+  padding-left: 0;
+  padding-right: 0;
 }

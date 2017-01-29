@@ -6,11 +6,15 @@
   display: inline-block;
   padding: 0; }
 
-#date-wrapper {
+#label-wrapper {
   position: relative;
   height: 20px; }
-  #date-wrapper #date-label {
+  #label-wrapper #date-label {
     position: absolute;
     left: 0; }
+
+.no-horiz-padding {
+  padding-left: 0;
+  padding-right: 0; }
 
 /*# sourceMappingURL=styles.css.map */
