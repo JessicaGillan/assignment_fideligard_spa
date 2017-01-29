@@ -1,18 +1,27 @@
 <div class="row">
   <div class="col-xs-10 col-xs-offset-2 ">
-    <div id="label-wrapper">
-      <span id="date-label">{{ dateInfo.date | date }}</span>
+    <div id="label-wrapper" ng-click="textInput = true">
+      <div id="date-label">
+        <span  ng-hide="textInput" >{{ dateInfo.date | date }}</span>
+        <form ng-submit="updateDate()">
+          <input type="date" id="date-label"
+                 ng-show="textInput" ng-model="dateInput"
+                 min="{{ dateInfo.startDate.toISOString().substring(0,10) }}"
+                 max="{{ dateInfo.endDate.toISOString().substring(0,10) }}">
+          <input type="submit" name="submit" value="" style="width:0; height:0; border:none;">
+        </form>
+      </div>
     </div>
   </div>
 </div>
 <div class="row">
   <div class="col-xs-2 no-horiz-padding">
-    <span class="pull-right">{{ dateInfo.startDate | date }}</span>
+    <span class="pull-right">{{ (dateInfo.startDate.getTime() + 86400000) | date }}</span>
   </div>
   <div class="col-xs-8">
-    <input id="date-picker" type="range" min="0" max="{{ dateInfo.numSteps }}" step="1"  ng-model="dateStep">
+    <input id="date-picker" type="range" min="1" max="{{ dateInfo.numSteps + 1 }}" step="1"  ng-model="dateStep">
   </div>
   <div class="col-xs-2 no-horiz-padding">
-    <span class="pull-left">{{ dateInfo.endDate | date }}</span>
+    <span class="pull-left">{{ (dateInfo.endDate.getTime() + 86400000) | date }}</span>
   </div>
 </div>

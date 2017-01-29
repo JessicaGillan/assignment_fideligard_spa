@@ -1,25 +1,37 @@
 fideligard.controller('DatePickerCtrl', ['$scope', 'dateService', function($scope, dateService){
+  var _$dPicker = $('#date-picker'),
+      _$dLabel = $('#date-label'),
+      _$lWrapper = $('#label-wrapper');
+
+  var _moveLabel = function moveLabel() {
+    // Move label to slider position
+    _$dLabel.css({ left: (_$dPicker[0].clientWidth - 15) / 364 * _$dPicker[0].value })
+  }
+
+  var _updateDatePicker = function _updateDatePicker(stepValue) {
+    $scope.dateStep = stepValue || dateService.getDateAsStep(); //set date-picker model value
+    _$dPicker[0].value = $scope.dateStep; //set date-picker slider value
+
+    _moveLabel();
+  }
+
   var _addEventListeners = function addEventListeners() {
-    var $dp = $('#date-picker');
-    $dp.on('input', function(e) {
-      $('#date-label').css({ left: (e.target.clientWidth - 15) / 364 * e.target.value });
+    _$dPicker.on('input', function(e) {
       dateService.setDateFromStep(e.target.value);
+      _moveLabel();
+      $scope.textInput = false;
     });
   };
 
-  var _initializeValues =function() {
-    $scope.dateStep = dateService.getDateAsStep(); //set date-picker model value
-
-    dp = $('#date-picker')[0]; //set date-picker slider value
-    dp.value = $scope.dateStep;
-
-    // Move label to starting position
-    $('#date-label').css({ left: (dp.clientWidth - 15) / 364 * dp.value })
+  $scope.updateDate= function() {
+    dateService.setDate($scope.dateInput);
+    _updateDatePicker();
+    $scope.textInput = false;
   }
 
   $scope.dateInfo = dateService.get();
+  $scope.textInput = false;
 
   _addEventListeners();
-  _initializeValues();
-
+  _updateDatePicker();
 }]);

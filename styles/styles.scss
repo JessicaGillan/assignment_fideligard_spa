@@ -13,10 +13,13 @@
 
 #label-wrapper {
   position: relative;
-  height: 20px;
+  height: 25px;
   #date-label {
     position: absolute;
     left: 0;
+    color: green;
+    font-weight: bolder;
+    font-size: 1em;
   }
 }
 
