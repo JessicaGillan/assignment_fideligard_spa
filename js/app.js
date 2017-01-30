@@ -15,7 +15,12 @@ fideligard.config(['$stateProvider', '$urlRouterProvider',
         },
         'stock-panel@': {
           templateUrl: 'js/templates/stock-panel.html',
-          controller: 'StockPanelCtrl'
+          controller: 'StockPanelCtrl',
+          resolve: {
+            companies:  function( yql ){
+              return yql.fetchSymbols()
+            }
+          }
         }
       }
     })

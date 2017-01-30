@@ -1,8 +1,8 @@
 fideligard.factory('dateService', function() {
   var _dateInfo = {
-    date: new Date('2014-06-15'),
+    date: new Date('2014-04-15'),
     startDate: new Date('2014-01-01'),
-    endDate: new Date('2014-12-31'),
+    endDate: new Date('2014-06-15'),
     numSteps: 365 // 2016 had 366 days, 1 - 366
   };
 

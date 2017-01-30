@@ -7,8 +7,9 @@
     <form class="form form-inline pull-right top-margin">
       <div class="form-group">
         <label for="">Filter: </label>
-        <select class="filterBy" name="filterBy">
-          <option value=""> </option>
+        <select class="" ng-model="symbolFilter">
+          <option value=""></option>
+          <option ng-repeat="symbol in symbols" value="{{ symbol }}">{{ symbol }}</option>
         </select>
       </div>
     </form>
@@ -19,7 +20,7 @@
     <scrollable-table watch="stocks">
       <table class="table table-striped">
         <thead>
-          <th>Symbol</th>
+          <th><a href="#" ng-click="property = property == '-Symbol' ? 'Symbol' : '-Symbol'">Symbol</a></th>
           <th>Price</th>
           <th>1d</th>
           <th>7d</th>
@@ -27,7 +28,7 @@
           <th>Trade?</th>
         </thead>
         <tbody>
-          <tr stock-data-row ng-repeat="stock in stocks | filter:{ Date: dateInfo.date.toISOString().substring(0,10) }:strict"
+          <tr stock-data-row ng-repeat="stock in stocks | filter:{ Date: dateInfo.date.toISOString().substring(0,10) }:strict | filter:{ Symbol: symbolFilter }:true | orderBy:property"
               stock="stock"></tr>
         </tbody>
       </table>
