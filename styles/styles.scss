@@ -1,3 +1,13 @@
+// GENERAL
+.no-horiz-padding {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.top-margin {
+  margin-top: 25px;
+}
+
 
 /*MAIN LAYOUT*/
 
@@ -23,7 +33,9 @@
   }
 }
 
-.no-horiz-padding {
-  padding-left: 0;
-  padding-right: 0;
+// STOCK PANEL
+#stock-panel {
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0 10px;
 }

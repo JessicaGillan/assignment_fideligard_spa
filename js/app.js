@@ -1,4 +1,4 @@
-var fideligard = angular.module('fideligard', ['ui.router'])
+var fideligard = angular.module('fideligard', ['ui.router', 'scrollable-table'])
 
 fideligard.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){
@@ -14,8 +14,8 @@ fideligard.config(['$stateProvider', '$urlRouterProvider',
           controller: 'DatePickerCtrl'
         },
         'stock-panel@': {
-          template: 'stock panel'
-          // templateUrl: 'js/templates/stock-panel.html'
+          templateUrl: 'js/templates/stock-panel.html',
+          controller: 'StockPanelCtrl'
         }
       }
     })
