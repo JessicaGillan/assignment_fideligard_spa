@@ -27,7 +27,7 @@
           <th>Trade?</th>
         </thead>
         <tbody>
-          <tr stock-data-row ng-repeat="stock in stocks"
+          <tr stock-data-row ng-repeat="stock in stocks | filter:{ Date: dateInfo.date.toISOString().substring(0,10) }:strict"
               stock="stock"></tr>
         </tbody>
       </table>

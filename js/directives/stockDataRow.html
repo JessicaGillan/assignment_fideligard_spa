@@ -1,6 +1,6 @@
 <td>{{ stock.Symbol }}</td>
 <td>{{ stock.Close | currency }}</td>
-<td>$354.45</td>
-<td>$354.45</td>
-<td>$354.45</td>
+<td>{{ stock.oneDayDiff ? (stock.oneDayDiff | currency) : N/A }}</td>
+<td>{{ stock.sevenDayDiff ? (stock.sevenDayDiff | currency) : N/A }}</td>
+<td>{{ stock.thirtyDayDiff ? (stock.thirtyDayDiff | currency) : N/A }}</td>
 <td><a href="#">trade</a></td>
