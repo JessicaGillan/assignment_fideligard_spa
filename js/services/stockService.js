@@ -39,6 +39,9 @@ fideligard.factory('stockService',['$q','$http', 'yql', function($q,$http, yql) 
       });
   };
 
+  // TODO: ACCOUNT FOR MISSING DAYS
+  // get stock at i and next, if they dont match, duplicate stock at i for next - first - 1 days
+
   var _closeDifference = function _closeDifference(day2, day1) {
     if(day1 && day1.Symbol === day2.Symbol) {
       return day2.Close - day1.Close
@@ -56,15 +59,25 @@ fideligard.factory('stockService',['$q','$http', 'yql', function($q,$http, yql) 
   };
 
   var sampleAll = function() { // FOR DEVELOPMENT ONLY
-    return $http({
+    var deferred = $q.defer();
+    
+    if (_stocks.length) { // if cached
+      // Resolve the deferred $q object before returning the promise
+      deferred.resolve(_stocks);
+      return deferred.promise;
+    }
+    // else- not in cache
+    $http({
       method: 'GET',
       url: 'eg_stocks.json'
     }).then( function(response) {
       angular.copy(response.data, _stocks);
-      return _stocks
+      deferred.resolve(_stocks);
     }, function(response) {
       console.log("error", response);
+      deferred.reject("Error: returned status " + response.status);
     });
+    return deferred.promise;
   };
 
   return {

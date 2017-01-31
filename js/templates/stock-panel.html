@@ -7,10 +7,7 @@
     <form class="form form-inline pull-right top-margin">
       <div class="form-group">
         <label for="">Filter: </label>
-        <select class="" ng-model="symbolFilter">
-          <option value=""></option>
-          <option ng-repeat="symbol in symbols" value="{{ symbol }}">{{ symbol }}</option>
-        </select>
+        <input type="text" ng-model="symbolFilter">
       </div>
     </form>
   </div>
@@ -28,7 +25,8 @@
           <th>Trade?</th>
         </thead>
         <tbody>
-          <tr stock-data-row ng-repeat="stock in stocks | filter:{ Date: dateInfo.date.toISOString().substring(0,10) }:strict | filter:{ Symbol: symbolFilter }:true | orderBy:property"
+          <!-- TODO: SHOW PRIOR DATES WHEN THERE ARE NO RESULTS -->
+          <tr stock-data-row ng-repeat="stock in stocks | filter:{ Date: dateInfo.date.toISOString().substring(0,10) }:strict | filter:{ Symbol: symbolFilter } | orderBy:property"
               stock="stock"></tr>
         </tbody>
       </table>

@@ -3,4 +3,4 @@
 <td>{{ stock.oneDayDiff ? (stock.oneDayDiff | currency) : N/A }}</td>
 <td>{{ stock.sevenDayDiff ? (stock.sevenDayDiff | currency) : N/A }}</td>
 <td>{{ stock.thirtyDayDiff ? (stock.thirtyDayDiff | currency) : N/A }}</td>
-<td><a href="#">trade</a></td>
+<td><a ui-sref = "index.trade( { id: {{ stock.id }} } )">trade</a></td>

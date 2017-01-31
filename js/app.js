@@ -40,10 +40,11 @@ fideligard.config(['$stateProvider', '$urlRouterProvider',
         }
       })
       .state('index.trade', {
-        url: 'trade',
+        url: 'trade/:id',
         views: {
           'main-panel@': {
-            template: 'trade main panel'
+            templateUrl: 'js/templates/trade-panel.html',
+            controller: 'TradePanelCtrl'
           },
         }
       })
