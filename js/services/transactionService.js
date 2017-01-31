@@ -1,0 +1,2 @@
+fideligard.factory('transactionService',[ function() {
+}]);
