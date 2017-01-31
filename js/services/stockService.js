@@ -55,7 +55,7 @@ fideligard.factory('stockService',['$q','$http', 'yql', function($q,$http, yql) 
     return _companies;
   };
 
-  var sampleAll = function _fetchSymbols() {
+  var sampleAll = function() { // FOR DEVELOPMENT ONLY
     return $http({
       method: 'GET',
       url: 'eg_stocks.json'

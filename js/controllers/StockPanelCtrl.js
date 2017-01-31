@@ -4,5 +4,4 @@ fideligard.controller('StockPanelCtrl', ['$scope', 'stockService', 'dateService'
 
   stockService.all($scope.dateInfo.startDate, $scope.dateInfo.endDate);
   $scope.stocks = stockService.get();
-
 }]);
