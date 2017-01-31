@@ -1,6 +1,6 @@
 fideligard.factory('accountService',[ '_', 'transactionService',
 function(_, transactionService) {
-  var _account = { balance: 100000.00,
+  var _account = {
                    stocksOwned: {} // { symbol: { purchaseDate: quantity } ...}
                  };
 
@@ -9,14 +9,43 @@ function(_, transactionService) {
   }
 
   var validPurchase = function validPurchase(stock, quantity) {
-    return _account.balance >= (parseInt(stock.Close) * parseInt(quantity))
+    return getBalance() >= (parseInt(stock.Close) * parseInt(quantity))
   }
 
   var validSale = function validSale(stock, quantity) {
     return _ownsEnoughStock(stock, quantity)
   }
 
-  var placeOrder = function placeOrder(stock, quantity) {
+  var placeOrder = function placeOrder(stock, quantity, type) {
+    if(type === 'buy'){
+      _buyStock(stock, quantity);
+    } else if(type === 'sell'){
+      _sellStock(stock, quantity);
+    } else {
+      return false;
+    }
+  }
+
+  var getQuantityOwned = function getQuantityOwned(stock) {
+    var qBeforeDate = 0;
+    var id = stock.Symbol;
+
+    for(date in _account.stocksOwned[id]){
+      if(Date.parse(date) < Date.parse(stock.Date)){
+        qBeforeDate += _account.stocksOwned[id][date];
+      }
+    }
+
+    return qBeforeDate
+  }
+
+  var getBalance = function getBalance(){
+    return transactionService.balanceToday()
+  }
+
+  // PRIVATE
+
+  var _buyStock = function _buyStock(stock, quantity) {
     var id = stock.Symbol;
     _account.stocksOwned[id] = _account.stocksOwned[id] || {};
 
@@ -26,28 +55,33 @@ function(_, transactionService) {
       _account.stocksOwned[id][stock.Date] = quantity;
     }
 
-    transactionService.add(stock, quantity);
-    console.log(_account)
+    transactionService.add(stock, quantity, 'buy');
+
     return _account
   }
 
-  var getQuantityOwned = function getQuantityOwned(stock) {
-    var qBeforeDate = 0;
+  var _sellStock = function _sellStock(stock, quantity) {
     var id = stock.Symbol;
+    var leftToSell = quantity;
 
     for(date in _account.stocksOwned[id]){
-      console.log(date, stock.Date)
       if(Date.parse(date) < Date.parse(stock.Date)){
-        console.log("less than current date!")
-        qBeforeDate += _account.stocksOwned[id][date];
+        if(_account.stocksOwned[id][date] > leftToSell){
+          _account.stocksOwned[id][date] -= leftToSell;
+          leftToSell = 0;
+        } else {
+          leftToSell -= _account.stocksOwned[id][date];
+          delete _account.stocksOwned[id][date];
+        }
       }
+
+      if(leftToSell === 0) break;
     }
 
-    console.log("q found" , qBeforeDate)
-    return qBeforeDate
-  }
+    transactionService.add(stock, quantity, 'sell');
 
-  // PRIVATE
+    return _account
+  }
 
   var _ownsEnoughStock = function _ownsEnoughStock(stock, quantity) {
     return quantity <= getQuantityOwned(stock)
@@ -55,6 +89,7 @@ function(_, transactionService) {
 
   return {
     get: getAccount,
+    balance: getBalance,
     validPurchase: validPurchase,
     validSale: validSale,
     placeOrder: placeOrder,

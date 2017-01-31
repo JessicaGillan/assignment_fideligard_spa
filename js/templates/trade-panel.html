@@ -1,4 +1,7 @@
 <div id="trade-panel">
+  <div class="flash ">
+
+  </div>
   <div class="row">
     <div class="col-xs-12">
       <div class="pull-left">
@@ -51,7 +54,7 @@
     </div>
     <div class="col-sm-6">
       <span class="title-col text-left">Cash Available</span>
-      <p>{{ account.balance | currency }}</p>
+      <p>{{ balance | currency }}</p>
       <span class="title-col text-left">Quantity Owned</span>
       <br>(Bought before {{ stock.Date | date }})
       <p>{{ numOwned }}</p>

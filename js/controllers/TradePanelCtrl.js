@@ -3,6 +3,7 @@ function($scope, $stateParams, $state, stockService, accountService){
   $scope.stock = stockService.findById($stateParams.id);
   $scope.account = accountService.get();
   $scope.numOwned = accountService.quantityOf($scope.stock);
+  $scope.balance = accountService.balance();
 
   // Set Defaults
   $scope.quantity = 1;
@@ -16,9 +17,10 @@ function($scope, $stateParams, $state, stockService, accountService){
     }
   };
 
+  // TODO: add flash message
   $scope.placeOrder = function(){
     if($scope.valid()) {
-      accountService.placeOrder($scope.stock, $scope.quantity);
+      accountService.placeOrder($scope.stock, $scope.quantity, $scope.type);
       $state.go('index.portfolio');
     }
   }
