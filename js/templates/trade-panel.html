@@ -20,7 +20,7 @@
       <form class="form" name="tradeForm">
         <p>
           <span class="title-col text-left">Symbol</span>
-          <p>{{ stock.Symbol }}</p>
+          {{ stock.Symbol }}
         </p>
         <p>
           <span class="title-col text-left">Buy/Sell</span>
@@ -35,23 +35,26 @@
         </p>
         <p>
           <span class="title-col text-left">Date</span>
-          <p>{{ stock.Date | date }}</p>
+          {{ stock.Date | date }}
         </p>
         <p>
           <span class="title-col text-left">Price</span>
-          <p>{{ stock.Close | currency }}</p>
+          {{ stock.Close | currency }}
         </p>
         <p>
           <span class="title-col text-left">Cost</span>
-          <p>{{ stock.Close * quantity | currency }}</p>
+          {{ stock.Close * quantity | currency }}
         </p>
 
-        <button class="btn btn-primary" ng-disabled="!valid(tradeForm)" ng-click="">Place Order!</button>
+        <button class="btn btn-primary" ng-disabled="!valid(tradeForm)" ng-click="placeOrder()">Place Order!</button>
       </form>
     </div>
     <div class="col-sm-6">
       <span class="title-col text-left">Cash Available</span>
       <p>{{ account.balance | currency }}</p>
+      <span class="title-col text-left">Quantity Owned</span>
+      <br>(Bought before {{ stock.Date | date }})
+      <p>{{ numOwned }}</p>
       <span class="title-col text-left">Order Status</span>
       <p ng-show="valid(tradeForm)" style="color:green;">VALID</p>
       <p ng-show="!valid(tradeForm)"style="color:red;">INVALID</p>
