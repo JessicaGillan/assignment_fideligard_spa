@@ -1,4 +1,10 @@
 var fideligard = angular.module('fideligard', ['ui.router', 'scrollable-table'])
+// allow DI for use in controllers, unit tests
+fideligard.constant('_', window._)
+  // use in views, ng-repeat="x in _.range(3)"
+fideligard.run(function ($rootScope) {
+     $rootScope._ = window._;
+  });
 
 fideligard.config(['$stateProvider', '$urlRouterProvider',
   function($stateProvider, $urlRouterProvider){

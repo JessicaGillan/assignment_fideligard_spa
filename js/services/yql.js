@@ -43,6 +43,7 @@ fideligard.factory('yql',['$http', function($http) {
   }
 
   var getStocks = function getStocks(symbols, startDate, endDate) {
+    console.log(_buildUrl(symbols, startDate, endDate))
     return $http({
       method: 'GET',
       url: _buildUrl(symbols, startDate, endDate)

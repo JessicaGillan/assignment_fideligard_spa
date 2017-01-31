@@ -17,40 +17,44 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <form class="form" action="index.html" method="post">
+      <form class="form" name="tradeForm">
         <p>
           <span class="title-col text-left">Symbol</span>
-          <input type="text" ng-model="symbol">
+          <p>{{ stock.Symbol }}</p>
         </p>
         <p>
           <span class="title-col text-left">Buy/Sell</span>
-          <input type="text" ng-model="symbol">
+          <select ng-model="type">
+            <option value="buy">Buy</option>
+            <option value="sell">Sell</option>
+          </select>
         </p>
         <p>
           <span class="title-col text-left">Quantity</span>
-          <input type="text" ng-model="symbol">
+          <input type="number" min="1" ng-model="quantity" value="1">
         </p>
         <p>
           <span class="title-col text-left">Date</span>
-          <input type="text" ng-model="symbol">
+          <p>{{ stock.Date | date }}</p>
         </p>
         <p>
           <span class="title-col text-left">Price</span>
-          <input type="text" ng-model="symbol">
+          <p>{{ stock.Close | currency }}</p>
         </p>
         <p>
           <span class="title-col text-left">Cost</span>
-          <input type="text" ng-model="symbol">
+          <p>{{ stock.Close * quantity | currency }}</p>
         </p>
 
-        <input type="submit" name="submit" class="btn btn-primary" value="Place Order!">
+        <button class="btn btn-primary" ng-disabled="!valid(tradeForm)" ng-click="">Place Order!</button>
       </form>
     </div>
     <div class="col-sm-6">
       <span class="title-col text-left">Cash Available</span>
-      <p>$34,345.23</p>
+      <p>{{ account.balance | currency }}</p>
       <span class="title-col text-left">Order Status</span>
-      <p style="color:green;">VALID</p>
+      <p ng-show="valid(tradeForm)" style="color:green;">VALID</p>
+      <p ng-show="!valid(tradeForm)"style="color:red;">INVALID</p>
     </div>
   </div>
 </div>
