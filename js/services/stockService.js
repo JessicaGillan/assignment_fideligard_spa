@@ -95,7 +95,7 @@ fideligard.factory('stockService',['$q','$http','_', 'yql', function($q, $http, 
   var findById = function findById(id) {
     id = parseInt(id);
 
-    if(_stocks[id].id === id) return _stocks[id];
+    if(_stocks[id] && _stocks[id].id === id) return _stocks[id];
 
     return _.find(_stocks, function(stock){ return stock.id === id; });
   }

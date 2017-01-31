@@ -9,10 +9,10 @@
       </div>
       <form class="form form-inline pull-right top-margin">
         <div class="form-group">
-          <select>
-            <option value="trade">Trade</option>
-            <option value="transactions">Transactions</option>
-            <option value="portfolio">Portfolio</option>
+          <select ng-model="state" ng-change="goToState(state)">
+            <option value="index.trade">Trade</option>
+            <option value="index.transactions">Transactions</option>
+            <option value="index.portfolio">Portfolio</option>
           </select>
         </div>
       </form>

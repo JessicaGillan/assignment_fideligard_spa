@@ -2,8 +2,9 @@ var fideligard = angular.module('fideligard', ['ui.router', 'scrollable-table'])
 // allow DI for use in controllers, unit tests
 fideligard.constant('_', window._)
   // use in views, ng-repeat="x in _.range(3)"
-fideligard.run(function ($rootScope) {
+fideligard.run(function ($rootScope, $state) {
      $rootScope._ = window._;
+     $rootScope.goToState = function(state) { $state.go(state); };
   });
 
 fideligard.config(['$stateProvider', '$urlRouterProvider',
@@ -41,7 +42,8 @@ fideligard.config(['$stateProvider', '$urlRouterProvider',
         url: 'transactions',
         views: {
           'main-panel@': {
-            template: 'transactions main panel'
+            templateUrl: 'js/templates/transaction-panel.html',
+            controller: 'TransactionPanelCtrl'
           },
         }
       })
