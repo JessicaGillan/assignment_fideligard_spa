@@ -1,6 +1,6 @@
 fideligard.controller('TradePanelCtrl', ['$scope', '$stateParams', '$state', 'stockService', 'accountService',
 function($scope, $stateParams, $state, stockService, accountService){
-  $scope.stock = stockService.findById($stateParams.id) || {};
+  $scope.stock = stockService.findForTodayById($stateParams.id) || {};
   $scope.account = accountService.get();
   $scope.numOwned = accountService.quantityOf($scope.stock);
   $scope.balance = accountService.balance();

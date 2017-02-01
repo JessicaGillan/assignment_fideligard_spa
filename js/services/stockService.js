@@ -1,5 +1,7 @@
-fideligard.factory('stockService',['$q','$http','_', 'yql', function($q, $http, _, yql) {
+fideligard.factory('stockService',['$q','$http','_', 'yql', 'dateService',
+function($q, $http, _, yql, dateService) {
   var _dateIndex = {},
+      _dateInfo = dateService.get(),
       _companies = yql.getCompanies(),
       _count,
       MILLIS_DAY = 86400000;
@@ -137,15 +139,15 @@ fideligard.factory('stockService',['$q','$http','_', 'yql', function($q, $http, 
   var findById = function findById(id) {
     id = parseInt(id);
 
-    if(_stocks[id] && _stocks[id].id === id) return _stocks[id];
+    var stocks = _dateIndex[_dateInfo.date.toISOString().slice(0,10)];
 
-    return _.find(_stocks, function(stock){ return stock.id === id; });
+    return _.find(stocks, function(stock){ return stock.id === id; });
   }
 
   return {
     get: getStocks,
     all: sampleAll, // sampleAll, // FOR DEVELOPMENT ONLY
     getCompanies: getCompanies,
-    findById: findById
+    findForTodayById: findById
   }
 }]);

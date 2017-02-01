@@ -25,7 +25,6 @@
           <th>Trade?</th>
         </thead>
         <tbody>
-          <!-- TODO: SHOW PRIOR DATES WHEN THERE ARE NO RESULTS -->
           <tr stock-data-row ng-repeat="stock in stocks | accessDateArray:dateInfo.date | filter:{ Symbol: symbolFilter } | orderBy:property"
               stock="stock"></tr>
         </tbody>

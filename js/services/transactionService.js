@@ -20,7 +20,7 @@ fideligard.factory('transactionService',['dateService', function(dateService) {
 
     _id++;
 
-    console.log(_transDateIndex);
+    console.log(JSON.stringify(_transDateIndex));
     return _transDateIndex
   }
 
