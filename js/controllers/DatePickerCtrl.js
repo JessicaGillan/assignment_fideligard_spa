@@ -10,10 +10,7 @@ fideligard.controller('DatePickerCtrl', ['$scope', 'dateService', function($scop
 
   var _updateDatePicker = function _updateDatePicker() {
     $scope.dateStep = dateService.getDateAsStep(); //set date-picker model value
-    console.log($scope.dateStep)
-    // TODO:NOT SETTING IT ON FIRST CALL
     _$dPicker[0].value = $scope.dateStep; //set date-picker slider value
-    console.log("val",  _$dPicker[0].value)
 
     _moveLabel();
   }

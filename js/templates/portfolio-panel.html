@@ -1,0 +1,42 @@
+<div id="portfolio-panel">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="pull-left">
+        <h3 class="text-left">Portfolio</h3>
+      </div>
+      <form class="form form-inline pull-right top-margin">
+        <div class="form-group">
+          <select ng-model="state" ng-change="goToState(state)">
+            <option value="index.trade">Trade</option>
+            <option value="index.transactions">Transactions</option>
+            <option value="index.portfolio">Portfolio</option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <scrollable-table watch="stocks">
+        <table class="table table-striped">
+          <thead>
+            <th><a href="#" ng-click="property = property == '-Symbol' ? 'Symbol' : '-Symbol'">Symbol</a></th>
+            <th>Quantity</th>
+            <th>Cost Basis</th>
+            <th>Current Value</th>
+            <th>Profit/Loss</th>
+            <th>Current Price</th>
+            <th>1d</th>
+            <th>7d</th>
+            <th>30d</th>
+            <th>Trade?</th>
+          </thead>
+          <tbody>
+            <tr portfolio-data-row ng-repeat="portData in portfolio | orderBy:property"
+                portData="portData"></tr>
+          </tbody>
+        </table>
+      </scrollable-table>
+    </div>
+  </div>
+</div>

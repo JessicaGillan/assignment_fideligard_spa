@@ -26,7 +26,7 @@
         </thead>
         <tbody>
           <!-- TODO: SHOW PRIOR DATES WHEN THERE ARE NO RESULTS -->
-          <tr stock-data-row ng-repeat="stock in stocks | filter:{ Date: dateInfo.date.toISOString().substring(0,10) }:strict | filter:{ Symbol: symbolFilter } | orderBy:property"
+          <tr stock-data-row ng-repeat="stock in stocks | accessDateArray:dateInfo.date | filter:{ Symbol: symbolFilter } | orderBy:property"
               stock="stock"></tr>
         </tbody>
       </table>

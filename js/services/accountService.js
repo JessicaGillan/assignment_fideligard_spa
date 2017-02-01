@@ -1,15 +1,20 @@
-fideligard.factory('accountService',[ '_', 'transactionService',
-function(_, transactionService) {
+fideligard.factory('accountService',[ '_', 'transactionService', 'stockService', 'dateService',
+function(_, transactionService, stockService, dateService) {
   var _account = {
-                   stocksOwned: {} // { symbol: { purchaseDate: quantity } ...}
+                  // TODO: populate this from transactions, out of sync
+                   stocksOwned: {}, // { symbol: { purchaseDate: quantity } ...}
+                   portfolio: []
                  };
+  var _dateInfo = dateService.get();
+  var _stocks = stockService.get();
+  var _transactions = transactionService.get();
 
   var getAccount = function getAccount(){
     return _account
   }
 
   var validPurchase = function validPurchase(stock, quantity) {
-    return getBalance() >= (parseInt(stock.Close) * parseInt(quantity))
+    return balanceToday() >= (parseInt(stock.Close) * parseInt(quantity))
   }
 
   var validSale = function validSale(stock, quantity) {
@@ -39,11 +44,37 @@ function(_, transactionService) {
     return qBeforeDate
   }
 
-  var getBalance = function getBalance(){
-    return transactionService.balanceToday()
+  var balanceToday = function balanceToday(){
+    var balance = 100000; // starting pot
+
+    for (var i = 0; i < _transactions.length; i++) {
+      if(Date.parse(_transactions[i].date) <= _dateInfo.date){
+        if(_transactions[i].type === 'buy') balance -= _transactions[i].cost;
+        if(_transactions[i].type === 'sell') balance += _transactions[i].cost;
+      }
+    }
+
+    return balance;
+  }
+
+  var buildPortfolio = function buildPortfolio(){
+    var portData = {}
+    for(var symbol in _account.stocksOwned){
+      for(var date in _account.stocksOwned[symbol]){
+        portData.transaction = _.find(_transactions, function(trans){ return trans.date === date && trans.symbol === symbol;  });
+        portData.stock = _.find(_stocks, function(stock){ return Date.parse(stock.Date) === _dateInfo.date && stock.Symmbol === symbol; });
+      }
+      _account.portfolio.push(portData);
+    }
   }
 
   // PRIVATE
+
+  var _populateStocksOwned = function populateStocksOwned(){
+    for (var i = 0; i < _transactions.length; i++) {
+      placeOrder(_transactions[i].stock, _transactions[i].quantity, _transactions[i].type)
+    }
+  }
 
   var _buyStock = function _buyStock(stock, quantity) {
     var id = stock.Symbol;
@@ -89,7 +120,7 @@ function(_, transactionService) {
 
   return {
     get: getAccount,
-    balance: getBalance,
+    balance: balanceToday,
     validPurchase: validPurchase,
     validSale: validSale,
     placeOrder: placeOrder,

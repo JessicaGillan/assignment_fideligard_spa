@@ -28,24 +28,13 @@
   border-radius: 4px;
   padding: 0 10px; }
 
-#trade-panel {
+#trade-panel, #transaction-panel, #portfolio-panel {
   margin-top: 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
   padding: 20px;
   padding-top: 0; }
-  #trade-panel .title-col {
-    display: inline-block;
-    font-weight: bolder;
-    width: 120px; }
-
-#transaction-panel {
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 20px;
-  padding-top: 0; }
-  #transaction-panel .title-col {
+  #trade-panel .title-col, #transaction-panel .title-col, #portfolio-panel .title-col {
     display: inline-block;
     font-weight: bolder;
     width: 120px; }

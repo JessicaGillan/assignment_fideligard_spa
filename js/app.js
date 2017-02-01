@@ -35,7 +35,8 @@ fideligard.config(['$stateProvider', '$urlRouterProvider',
       url: 'portfolio',
       views: {
         'main-panel@': {
-          template: 'portfolio main panel'
+          templateUrl: 'js/templates/portfolio-panel.html',
+          controller: 'PortfolioPanelCtrl'
         }
       }})
       .state('index.transactions', {
