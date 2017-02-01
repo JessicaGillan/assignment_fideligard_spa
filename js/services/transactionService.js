@@ -1,8 +1,6 @@
 fideligard.factory('transactionService',['dateService', function(dateService) {
 
   var _transDateIndex = {};
-
-
   var _id;
   var _dateInfo = dateService.get();
 
@@ -21,23 +19,28 @@ fideligard.factory('transactionService',['dateService', function(dateService) {
     _id++;
 
     console.log(JSON.stringify(_transDateIndex));
-    return _transDateIndex
-  }
-
-  var balanceToday = function(){
-    var balance = 100000; // starting pot
-    for (var i = 0; i < _transactions.length; i++) {
-      if(Date.parse(_transactions[i].date) <= _dateInfo.date){
-        if(_transactions[i].type === 'buy') balance -= _transactions[i].cost;
-        if(_transactions[i].type === 'sell') balance += _transactions[i].cost;
-      }
-    }
-
-    return balance;
+    return trans
   }
 
   var getTransactions = function getTransactions() {
     return _transDateIndex
+  }
+
+  var getTransactionsToDate = function getTransactionsToDate() {
+    var transToDate = {};
+    var curr = _dateInfo.startDate;
+    var currStr = curr.toISOString().slice(0,10);
+
+    while(curr <= _dateInfo.endDate){
+      if(_transDateIndex[currStr]){
+        transToDate[currStr] = _transDateIndex[currStr];
+      }
+
+      curr = new Date(Date.parse(currStr) + 86400000);
+      currStr = curr.toISOString().slice(0,10);
+    }
+
+    return transToDate
   }
 
   // PRIVATE
@@ -52,7 +55,7 @@ fideligard.factory('transactionService',['dateService', function(dateService) {
 
   return {
     add: add,
-    balanceToday: balanceToday,
-    get: getTransactions
+    get: getTransactions,
+    getToCurrent: getTransactionsToDate
   }
 }]);

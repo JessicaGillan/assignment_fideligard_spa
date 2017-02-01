@@ -1,10 +1,10 @@
-<td>{{ stock.Symbol }}</td>
-<td>{{ portData.transaction.quantity }}</td>
-<td>Cost Basis</td>
-<td>{{ portData.transaction.quantity * portData.stock.Close }}</td>
-<td>Profit/Loss</td>
-<td>{{ portData.stock.Close }}</td>
-<td>{{ portData.stock.oneDayDiff }}</td>
-<td>{{ portData.stock.sevenDayDiff }}</td>
-<td>{{ portData.stock.thirtyDayDiff }}</td>
-<td><a ui-sref = "index.trade( { id: {{ portData.stock.id }} } )">trade</a></td>
+<td>{{ portData.symbol }}</td>
+<td>{{ portData.quantity }}</td>
+<td>{{ portData.costBasis }}</td>
+<td>q * cs.Close</td>
+<td>CV - pd.costBasis</td>
+<td>cS.Close</td>
+<td>cS.oneDayDiff</td>
+<td>cS.sevenDayDiff</td>
+<td>cS.thirtyDayDiff</td>
+<td><a ui-sref = "index.trade( { id: 2 } )">trade</a></td>

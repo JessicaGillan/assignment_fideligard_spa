@@ -20,7 +20,7 @@
       <scrollable-table watch="stocks">
         <table class="table table-striped">
           <thead>
-            <th><a href="#" ng-click="property = property == '-Symbol' ? 'Symbol' : '-Symbol'">Symbol</a></th>
+            <th><a href="#" ng-click="property = property == '-symbol' ? 'symbol' : '-symbol'">Symbol</a></th>
             <th>Quantity</th>
             <th>Cost Basis</th>
             <th>Current Value</th>
@@ -32,7 +32,7 @@
             <th>Trade?</th>
           </thead>
           <tbody>
-            <tr portfolio-data-row ng-repeat="portData in portfolio | orderBy:property"
+            <tr portfolio-data-row ng-repeat="portData in portfolio | objToArrayFilter"
                 portData="portData"></tr>
           </tbody>
         </table>

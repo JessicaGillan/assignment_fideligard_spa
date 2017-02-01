@@ -1,20 +1,13 @@
 fideligard.factory('accountService',[ '_', 'transactionService', 'stockService', 'dateService',
 function(_, transactionService, stockService, dateService) {
-  var _account = {
-                  // TODO: populate this from transactions, out of sync
-                   stocksOwned: {}, // { symbol: { purchaseDate: quantity } ...}
-                   portfolio: []
-                 };
-  var _dateInfo = dateService.get();
-  var _stocks = stockService.get();
-  var _transactions = transactionService.get();
+  var _portfolio = {}, _account = {};
 
   var getAccount = function getAccount(){
     return _account
   }
 
   var validPurchase = function validPurchase(stock, quantity) {
-    return balanceToday() >= (parseInt(stock.Close) * parseInt(quantity))
+    return _account.bankRoll >= (parseFloat(stock.Close) * parseInt(quantity))
   }
 
   var validSale = function validSale(stock, quantity) {
@@ -22,96 +15,59 @@ function(_, transactionService, stockService, dateService) {
   }
 
   var placeOrder = function placeOrder(stock, quantity, type) {
-    if(type === 'buy'){
-      _buyStock(stock, quantity);
-    } else if(type === 'sell'){
-      _sellStock(stock, quantity);
-    } else {
-      return false;
-    }
+    var trans = transactionService.add(stock, quantity, type);
+    _addToPortfolio(trans);
+
+    return _portfolio
   }
 
   var getQuantityOwned = function getQuantityOwned(stock) {
-    var qBeforeDate = 0;
-    var id = stock.Symbol;
-
-    for(date in _account.stocksOwned[id]){
-      if(Date.parse(date) < Date.parse(stock.Date)){
-        qBeforeDate += _account.stocksOwned[id][date];
-      }
+    if(_portfolio[stock.Symbol]){
+      return _portfolio[stock.Symbol].quantity
     }
-
-    return qBeforeDate
+    return 0;
   }
 
   var balanceToday = function balanceToday(){
-    var balance = 100000; // starting pot
-
-    for (var i = 0; i < _transactions.length; i++) {
-      if(Date.parse(_transactions[i].date) <= _dateInfo.date){
-        if(_transactions[i].type === 'buy') balance -= _transactions[i].cost;
-        if(_transactions[i].type === 'sell') balance += _transactions[i].cost;
-      }
-    }
-
-    return balance;
+    return _account.bankRoll;
   }
 
-  var buildPortfolio = function buildPortfolio(){
-    var portData = {}
-    for(var symbol in _account.stocksOwned){
-      for(var date in _account.stocksOwned[symbol]){
-        portData.transaction = _.find(_transactions, function(trans){ return trans.date === date && trans.symbol === symbol;  });
-        portData.stock = _.find(_stocks, function(stock){ return Date.parse(stock.Date) === _dateInfo.date && stock.Symmbol === symbol; });
+  var buildPortfolio = function buildPortfolio() {
+    console.log("building Portfolio");
+    var transToDate = transactionService.getToCurrent();
+    console.log("transToDate", transToDate)
+
+    angular.copy({}, _portfolio);
+    angular.copy({ bankRoll: 100000 }, _account);
+
+    for(var date in transToDate){
+      for (var i = 0; i < transToDate[date].length; i++) {
+        _addToPortfolio(transToDate[date][i]);
       }
-      _account.portfolio.push(portData);
     }
+    console.log("portfolio", _portfolio, _account)
+    return _portfolio;
   }
 
   // PRIVATE
 
-  var _populateStocksOwned = function populateStocksOwned(){
-    for (var i = 0; i < _transactions.length; i++) {
-      placeOrder(_transactions[i].stock, _transactions[i].quantity, _transactions[i].type)
-    }
-  }
+  var _addToPortfolio = function _addToPortfolio(transaction) {
+    var currentStock = stockService.findForDateBySym(transaction.date, transaction.symbol);
 
-  var _buyStock = function _buyStock(stock, quantity) {
-    var id = stock.Symbol;
-    _account.stocksOwned[id] = _account.stocksOwned[id] || {};
+    var symKey = transaction.symbol;
+    _portfolio[symKey] =  _portfolio[symKey] || {};
+    _portfolio[symKey].quantity =  _portfolio[symKey].quantity || 0;
+    _portfolio[symKey].costBasis =  _portfolio[symKey].costBasis || 0.00;
+    _portfolio[symKey].symbol =  _portfolio[symKey].symbol || symKey;
 
-    if(_account.stocksOwned[id][stock.Date]) {
-      _account.stocksOwned[id][stock.Date] += quantity;
+    if(transaction.type === "buy"){
+      _portfolio[symKey].quantity += transaction.quantity;
     } else {
-      _account.stocksOwned[id][stock.Date] = quantity;
+      _portfolio[symKey].quantity -= transaction.quantity;
     }
 
-    transactionService.add(stock, quantity, 'buy');
-
-    return _account
-  }
-
-  var _sellStock = function _sellStock(stock, quantity) {
-    var id = stock.Symbol;
-    var leftToSell = quantity;
-
-    for(date in _account.stocksOwned[id]){
-      if(Date.parse(date) < Date.parse(stock.Date)){
-        if(_account.stocksOwned[id][date] > leftToSell){
-          _account.stocksOwned[id][date] -= leftToSell;
-          leftToSell = 0;
-        } else {
-          leftToSell -= _account.stocksOwned[id][date];
-          delete _account.stocksOwned[id][date];
-        }
-      }
-
-      if(leftToSell === 0) break;
-    }
-
-    transactionService.add(stock, quantity, 'sell');
-
-    return _account
+    _portfolio[symKey].costBasis += transaction.cost;
+    _account.bankRoll += transaction.cost;
   }
 
   var _ownsEnoughStock = function _ownsEnoughStock(stock, quantity) {
@@ -124,6 +80,7 @@ function(_, transactionService, stockService, dateService) {
     validPurchase: validPurchase,
     validSale: validSale,
     placeOrder: placeOrder,
-    quantityOf: getQuantityOwned
+    quantityOf: getQuantityOwned,
+    buildPortfolio: buildPortfolio
   }
 }]);

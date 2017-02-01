@@ -144,10 +144,17 @@ function($q, $http, _, yql, dateService) {
     return _.find(stocks, function(stock){ return stock.id === id; });
   }
 
+  var findForDateBySym = function findForDateBySym(dateStr, sym) {
+    var stocks = _dateIndex[dateStr];
+
+    return _.find(stocks, function(stock){ return stock.Symbol === sym; });
+  }
+
   return {
     get: getStocks,
     all: sampleAll, // sampleAll, // FOR DEVELOPMENT ONLY
     getCompanies: getCompanies,
-    findForTodayById: findById
+    findForTodayById: findById,
+    findForDateBySym: findForDateBySym
   }
 }]);

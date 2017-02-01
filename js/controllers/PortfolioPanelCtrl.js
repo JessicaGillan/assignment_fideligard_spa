@@ -1,9 +1,10 @@
-fideligard.controller('PortfolioPanelCtrl', ['$scope', 'accountService',
-function($scope, accountService){
+fideligard.controller('PortfolioPanelCtrl', ['$scope','$rootScope', 'accountService', 'dateService',
+function($scope, $rootScope, accountService, dateService){
   $scope.state = 'index.portfolio'
+  $scope.dateInfo = dateService.get();
+  $scope.portfolio = accountService.buildPortfolio();
 
-
-  $scope.account = accountService.get();
-  $scope.portfolio = $scope.account.portfolio
-  console.log($scope.portfolio)
+  $rootScope.$watch('dateInfo', function(newValue, oldValue){
+    $scope.portfolio = accountService.buildPortfolio();
+  });
 }]);
